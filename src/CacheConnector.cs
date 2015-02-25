@@ -15,6 +15,9 @@ namespace V8Pool
         object connect([MarshalAs(UnmanagedType.BStr)] [In] string connString);
 
         void setCacheId([MarshalAs(UnmanagedType.BStr)] [In] string cacheId);
+
+        V82.IServerAgentConnection connectAgent([MarshalAs(UnmanagedType.BStr)] [In] string connString);
+        V82.IWorkingProcessConnection connectWorkingProcess([MarshalAs(UnmanagedType.BStr)] [In] string connString);
     }
 
 
@@ -91,6 +94,46 @@ namespace V8Pool
             }
         }
 
+        private static Dictionary<string, Dictionary<string, V82.IServerAgentConnection>> agentData = new Dictionary<string, Dictionary<string, IServerAgentConnection>>();
+        private Dictionary<string, V82.IServerAgentConnection> localAgentData = null;
+
+        public V82.IServerAgentConnection connectAgent([MarshalAs(UnmanagedType.BStr)] [In] string connString)
+        {
+            lock (localAgentData)
+            {
+                if (localAgentData.ContainsKey(connString))
+                {
+                    /* Провѣрить существованіе объекта */
+                    return localAgentData[connString];
+                }
+
+                V82.COMConnectorClass ctr = new V82.COMConnectorClass();
+                V82.IServerAgentConnection result = ctr.ConnectAgent(connString);
+                localAgentData[connString] = result;
+                return result;
+            }
+        }
+
+        private static Dictionary<string, Dictionary<string, V82.IWorkingProcessConnection>> processData = new Dictionary<string, Dictionary<string, IWorkingProcessConnection>>();
+        private Dictionary<string, V82.IWorkingProcessConnection> localProcessData = null;
+
+        public V82.IWorkingProcessConnection connectWorkingProcess([MarshalAs(UnmanagedType.BStr)] [In] string connString)
+        {
+            lock (localProcessData)
+            {
+                if (localProcessData.ContainsKey(connString))
+                {
+                    /* Провѣрить существованіе объекта */
+                    return localProcessData[connString];
+                }
+
+                V82.COMConnectorClass ctr = new V82.COMConnectorClass();
+                V82.IWorkingProcessConnection result = ctr.ConnectWorkingProcess(connString);
+                localProcessData[connString] = result;
+                return result;
+            }
+        }
+
         public void setCacheId(string cacheId)
         {
             this._cacheId = cacheId;
@@ -104,6 +147,32 @@ namespace V8Pool
                 {
                     localdata = new Dictionary<string, ConnectionData>();
                     data[cacheId] = localdata;
+                }
+            }
+
+            lock (agentData)
+            {
+                if (agentData.ContainsKey(cacheId))
+                {
+                    localAgentData = agentData[cacheId];
+                }
+                else
+                {
+                    localAgentData = new Dictionary<string, IServerAgentConnection>();
+                    agentData[cacheId] = localAgentData;
+                }
+            }
+
+            lock (processData)
+            {
+                if (processData.ContainsKey(cacheId))
+                {
+                    localProcessData = processData[cacheId];
+                }
+                else
+                {
+                    localProcessData = new Dictionary<string, IWorkingProcessConnection>();
+                    processData[cacheId] = localProcessData;
                 }
             }
         }
