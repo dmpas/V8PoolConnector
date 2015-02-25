@@ -52,5 +52,11 @@
     <Reference Include="Interop.V83">
       <HintPath>Interop.V83.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.V8">
+      <HintPath>Interop.V8.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.V81">
+      <HintPath>Interop.V81.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
