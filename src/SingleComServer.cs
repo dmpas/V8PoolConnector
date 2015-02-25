@@ -60,7 +60,7 @@ namespace V8Pool
 
             int hResult = COMNative.CoRegisterClassObject(
                 ref clsidSimpleObj,
-                new SingleComManagerClassFactory(),
+                new CacheConnectorClassFactory(),
                 CLSCTX.LOCAL_SERVER,
                 REGCLS.MULTIPLEUSE | REGCLS.SUSPENDED,
                 out _cookieSimpleObj);

@@ -111,7 +111,7 @@ namespace V8Pool
     }
 
 
-    internal class SingleComManagerClassFactory : IClassFactory
+    internal class CacheConnectorClassFactory : IClassFactory
     {
         public int CreateInstance(IntPtr pUnkOuter, ref Guid riid, 
             out IntPtr ppvObject)
