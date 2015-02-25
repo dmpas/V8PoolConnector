@@ -66,6 +66,7 @@ namespace V8Pool
 
         public CacheConnector()
         {
+            setCacheId("");
         }
 
         private class ConnectionData
