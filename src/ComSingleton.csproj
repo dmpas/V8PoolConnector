@@ -38,8 +38,8 @@
     <Compile Include="NativeMethod.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SingleComServer.cs" />
-    <Compile Include="SingleComManager.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CacheConnector.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

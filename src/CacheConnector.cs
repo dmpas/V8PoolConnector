@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 using System.ComponentModel;
 using V82;
 
-namespace DmpasComSingleton
+namespace V8Pool
 {
 
 
-    [Guid(SingleComManager.InterfaceId), ComVisible(true)]
-    public interface ISingleComManager
+    [Guid(CacheConnector.InterfaceId), ComVisible(true)]
+    public interface ICacheConnector
     {
         int getSomeData();
         void setSomeData(int data);
@@ -20,8 +20,8 @@ namespace DmpasComSingleton
 
 
     [ClassInterface(ClassInterfaceType.None)]
-    [Guid(SingleComManager.ClassId), ComVisible(true)]
-    public class SingleComManager : ReferenceCountedObject, ISingleComManager
+    [Guid(CacheConnector.ClassId), ComVisible(true)]
+    public class CacheConnector : ReferenceCountedObject, ICacheConnector
     {
         internal const string ClassId =
             "6919b458-f791-4b74-80b3-b77e0ac50cbf";
@@ -60,7 +60,7 @@ namespace DmpasComSingleton
             }
         }
 
-        public SingleComManager()
+        public CacheConnector()
         {
         }
 
@@ -112,13 +112,13 @@ namespace DmpasComSingleton
                 Marshal.ThrowExceptionForHR(COMNative.CLASS_E_NOAGGREGATION);
             }
 
-            if (riid == new Guid(SingleComManager.ClassId) ||
+            if (riid == new Guid(CacheConnector.ClassId) ||
                 riid == new Guid(COMNative.IID_IDispatch) ||
                 riid == new Guid(COMNative.IID_IUnknown))
             {
                 // Create the instance of the .NET object
                 ppvObject = Marshal.GetComInterfaceForObject(
-                    new SingleComManager(), typeof(ISingleComManager));
+                    new CacheConnector(), typeof(ICacheConnector));
             }
             else
             {

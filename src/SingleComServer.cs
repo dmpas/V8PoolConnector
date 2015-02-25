@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace DmpasComSingleton
+namespace V8Pool
 {
     sealed internal class SingleComServer
     {
@@ -56,7 +56,7 @@ namespace DmpasComSingleton
 
         private void PreMessageLoop()
         {
-            Guid clsidSimpleObj = new Guid(SingleComManager.ClassId);
+            Guid clsidSimpleObj = new Guid(CacheConnector.ClassId);
 
             int hResult = COMNative.CoRegisterClassObject(
                 ref clsidSimpleObj,
