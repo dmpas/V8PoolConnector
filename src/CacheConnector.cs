@@ -7,7 +7,6 @@ using V82;
 namespace V8Pool
 {
 
-
     [Guid(CacheConnector.InterfaceId), ComVisible(true)]
     public interface ICacheConnector
     {
@@ -16,8 +15,11 @@ namespace V8Pool
 
         void setCacheId([MarshalAs(UnmanagedType.BStr)] [In] string cacheId);
 
-        V82.IServerAgentConnection connectAgent([MarshalAs(UnmanagedType.BStr)] [In] string connString);
-        V82.IWorkingProcessConnection connectWorkingProcess([MarshalAs(UnmanagedType.BStr)] [In] string connString);
+        [return: MarshalAs(UnmanagedType.Interface)]
+        object connectAgent([MarshalAs(UnmanagedType.BStr)] [In] string connString);
+
+        [return: MarshalAs(UnmanagedType.Interface)]
+        object connectWorkingProcess([MarshalAs(UnmanagedType.BStr)] [In] string connString);
     }
 
 
@@ -98,7 +100,7 @@ namespace V8Pool
         private static Dictionary<string, Dictionary<string, V82.IServerAgentConnection>> agentData = new Dictionary<string, Dictionary<string, IServerAgentConnection>>();
         private Dictionary<string, V82.IServerAgentConnection> localAgentData = null;
 
-        public V82.IServerAgentConnection connectAgent([MarshalAs(UnmanagedType.BStr)] [In] string connString)
+        public object connectAgent([MarshalAs(UnmanagedType.BStr)] [In] string connString)
         {
             lock (localAgentData)
             {
@@ -118,7 +120,7 @@ namespace V8Pool
         private static Dictionary<string, Dictionary<string, V82.IWorkingProcessConnection>> processData = new Dictionary<string, Dictionary<string, IWorkingProcessConnection>>();
         private Dictionary<string, V82.IWorkingProcessConnection> localProcessData = null;
 
-        public V82.IWorkingProcessConnection connectWorkingProcess([MarshalAs(UnmanagedType.BStr)] [In] string connString)
+        public object connectWorkingProcess([MarshalAs(UnmanagedType.BStr)] [In] string connString)
         {
             lock (localProcessData)
             {

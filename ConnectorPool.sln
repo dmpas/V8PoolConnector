@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComSingleton", "src\ComSingleton.csproj", "{B8471791-86B6-4667-9DBA-7C3CF8EBBF1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V8Pool", "src\V8Pool.csproj", "{B8471791-86B6-4667-9DBA-7C3CF8EBBF1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
