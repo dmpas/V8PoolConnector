@@ -11,11 +11,10 @@ namespace V8Pool
     [Guid(CacheConnector.InterfaceId), ComVisible(true)]
     public interface ICacheConnector
     {
-        int getSomeData();
-        void setSomeData(int data);
-
         [return: MarshalAs(UnmanagedType.Interface)]
         object connect([MarshalAs(UnmanagedType.BStr)] [In] string connString);
+
+        void setCacheId([MarshalAs(UnmanagedType.BStr)] [In] string cacheId);
     }
 
 
@@ -29,6 +28,8 @@ namespace V8Pool
             "bb6caf0e-a415-4386-aaea-c702960f76fa";
         internal const string EventsId =
             "af6ee9ab-d2b8-43ad-9dbb-db82efe4cdb5";
+
+        private string _cacheId = "";
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [ComRegisterFunction()]
@@ -64,34 +65,46 @@ namespace V8Pool
         {
         }
 
-        static int someData = 5;
-
-        public int getSomeData()
+        private class ConnectionData
         {
-            return someData;
+            public DateTime connected;
+            public object connection;
         }
 
-        public void setSomeData(int data)
-        {
-            someData = data;
-        }
-
-        private static Dictionary<string, object> data = new Dictionary<string, object>();
+        private static Dictionary<string, Dictionary<string, ConnectionData>> data = new Dictionary<string, Dictionary<string, ConnectionData>>();
+        private Dictionary<string, ConnectionData> localdata = null;
 
         public object connect(string connString)
         {
-            lock (data)
+            lock (localdata)
             {
-                if (data.ContainsKey(connString))
+                if (localdata.ContainsKey(connString))
                 {
                     /* Провѣрить существованіе объекта */
-                    return data[connString];
+                    return localdata[connString].connection;
                 }
 
                 V82.COMConnectorClass ctr = new V82.COMConnectorClass();
                 object result = ctr.Connect(connString);
-                data[connString] = result;
+                localdata[connString] = new ConnectionData { connected=DateTime.Now, connection=result };
                 return result;
+            }
+        }
+
+        public void setCacheId(string cacheId)
+        {
+            this._cacheId = cacheId;
+            lock (data) 
+            {
+                if (data.ContainsKey(cacheId))
+                {
+                    localdata = data[cacheId];
+                }
+                else
+                {
+                    localdata = new Dictionary<string, ConnectionData>();
+                    data[cacheId] = localdata;
+                }
             }
         }
 
